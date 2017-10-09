@@ -14,6 +14,8 @@ uthread: uthread.h uthread.cpp
 main: $(OBJECTS)
 	$(CXX) main.cpp $(OBJECTS) -o main
 	
+debug: $(OBJECTS)
+	$(CXX) -g -O0 main.cpp $(OBJECTS) -o main
 
 clean:
 	rm -f *.o *.exe a.out main
