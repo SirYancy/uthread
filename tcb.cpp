@@ -1,4 +1,6 @@
-#include <uthread.h>
+#include <ucontext.h>
+#include <cstddef>
+#include "tcb.h"
 
 #define STACK_SIZE 4096
 
@@ -21,7 +23,7 @@ TCB::TCB(const int tid, void *(*start_routine)(void *), void *args):
     sp = (address_t)stack + STACK_SIZE - sizeof(int);
     pc = (address_t)start_routine;
 
-    state = "INIT";
+    state = INIT;
     
     arg = (address_t)args;
     
@@ -42,16 +44,25 @@ int TCB::getTID() const
 /*!
  * \return context ucontext_t the context for this thread
  */
-ucontext_t TCB::getContext()
+ucontext_t *TCB::getContext() const
 {
     return context;
+}
+
+//! Program Counter Getter
+/*!
+ * \return pc address_t pointer to program counter
+ */
+address_t TCB::getProgramCounter() const
+{
+    return pc;
 }
 
 //! Stack pointer getter
 /*!
  * \return sp address_t pointer to stack
  */
-address_t TCB::getStackPointer()
+address_t TCB::getStackPointer() const
 {
     return sp;
 }
@@ -70,9 +81,15 @@ address_t TCB::getArguments() const
 /*!
  * \return ret_val address_t pointer to the return value of entry function
  */
-address_t TCB::ret_val
+address_t TCB::getReturnValue() const
 {
-    return re_val;
+    return ret_val;
+}
+
+//! Return value setter
+void TCB::setReturnValue(const void* ret)
+{
+    ret_val = (address_t)ret;
 }
 
 //! State getter

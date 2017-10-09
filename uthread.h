@@ -5,6 +5,8 @@
 #define __USE_GNU
 #endif //__USE_GNU
 
+#include <cstddef>
+
 typedef unsigned long address_t;
 
 //! Creates a new thread
@@ -31,7 +33,12 @@ int uthread_suspend(int tid);
 //! Resumes thread execution
 int uthread_resume(int tid);
 
+/*
 //! Async I/O
 ssize_t async_read(int fildes, void *buf, size_t nbytes);
+*/
+
+//! Stub
+void stub(void *(*start_routine)(void *), void *args);
 
 #endif //UTHREAD_H

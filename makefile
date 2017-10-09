@@ -1,18 +1,18 @@
 CXX = g++
 CC = gcc
 
-OBJECTS = queue.o uthread.o
+OBJECTS = tcb.o uthread.o
 
 default: main
 
-queue.o: queue.c
-	$(CC) -c queue.c
+tcb: tcb.h tcb.cpp
+	$(CXX) -c tcb.cpp
 
-uthread.o: uthread.h uthread.c
-	$(CC) -c uthread.c
+uthread: uthread.h uthread.cpp
+	$(CXX) -c uthread.cpp
 
 main: $(OBJECTS)
-	$(CC) main.c $(OBJECTS) -o main
+	$(CXX) main.cpp $(OBJECTS) -o main
 	
 
 clean:
