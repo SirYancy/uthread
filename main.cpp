@@ -18,4 +18,5 @@ int main()
 {
     int i = 5;
     uthread_create((void *(*)(void *))f, &i);
+    uthread_create((void *(*)(void *))f, &i);
 }

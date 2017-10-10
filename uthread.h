@@ -6,6 +6,8 @@
 #endif //__USE_GNU
 
 #include <cstddef>
+#include <vector>
+#include "tcb.h"
 
 typedef unsigned long address_t;
 
@@ -32,6 +34,9 @@ int uthread_suspend(int tid);
 
 //! Resumes thread execution
 int uthread_resume(int tid);
+
+//! Finds a TCB in a vector by tid and removes it.
+TCB *getTCB(int tid, vector<TCB> vec);
 
 /*
 //! Async I/O

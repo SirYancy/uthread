@@ -1,8 +1,9 @@
 #include "uthread.h"
 #include "tcb.h"
+#include <stdlib.h>
 #include <ucontext.h>
-#include <queue>
 #include <cstddef>
+#include <vector>
 
 using namespace std;
 
@@ -12,9 +13,9 @@ typedef unsigned long address_t;
 
 ucontext_t mainContext;
 
-queue<TCB> readyQueue;
-queue<TCB> waitingQueue;
-queue<TCB> finishedQueue;
+vector<TCB> readyQueue;
+vector<TCB> waitingQueue;
+vector<TCB> finishedQueue;
 
 int threadCount = 0;
 
@@ -36,7 +37,7 @@ int uthread_create(void *(*start_routine)(void *), void *args)
 //! Calling thread relinquishes control
 int uthread_yield(void)
 {
-
+    
 }
 
 //! Returns tid of current running thread
@@ -55,6 +56,7 @@ int uthread_join(int tid, void **retval)
 int uthread_init(int time_slice)
 {
     ucontext_t *context = createdThread->getContext();
+    int tid = createdThread->getTID();
     getcontext(context);
     context->uc_mcontext.gregs[REG_RIP] =
         createdThread->getProgramCounter();
@@ -63,8 +65,10 @@ int uthread_init(int time_slice)
     sigemptyset(&(context->uc_sigmask));
     
     createdThread->setState(State::READY);
-    readyQueue.push(*createdThread);
+    readyQueue.push_back(*createdThread);
     createdThread = NULL;
+
+    return tid;
 }
 
 //! Terminates thread
@@ -82,7 +86,39 @@ int uthread_suspend(int tid)
 //! Resumes thread execution
 int uthread_resume(int tid)
 {
-    
+    if (runningThread != NULL)
+    {
+        uthread_yield();
+    }
+    if(tid < 0){
+        runningThread = waitingQueue.pop_front();
+    runningThread = getTCB(tid, readyQueue)
+    volatile int flag = 0;
+    int ret_val = getcontext(runningThread);
+    if(flag == 1)
+        return;
+    flag = 1;
+    setcontext(runningThread); 
+}
+
+
+//! Finds a TCB in a vactor by tid and removes it, returning pointer
+/*!
+ * \param tid int the thread id number
+ * \param vec vector<TCB> The vector that the the TCB might be in
+ * \return TCB* a pointer to the TCB or NULL
+ */
+TCB *getTCB(int tid, vector<TCB> vec)
+{
+    for(auto = vec.begin(); it != vec.end(); ++it){
+        if(it->getTID() == tid)
+        {
+            TCB *block = &(*it);
+            vec.erase(it);
+            return block;
+        }
+        return NULL;
+    }
 }
 
 /*
