@@ -36,10 +36,5 @@ In the tests folder I have the example files and some other tests that I've run.
 
 ## TODO
 
-* Re-implement what I have in C++ (I'm willing to start doing this over the next day or two)
-* Implement a proper TCB as a class. Member variables:
-    * tid
-    * ucontext_t
-    * stack pointer
-    * Thread state (stack?)
-    * Thread entry function with its parameters and return values.
+* Thinking of changing the vectors to deques because vectors are very annoyingly FILO and we need FIFO behavior, but queues are not indexable. So, the deque seems like kind of a heavy solution to the problem, but it should be fine.
+* Continuing to implement the other methods in uthread.cpp
