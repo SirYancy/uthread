@@ -20,6 +20,10 @@ TCB::TCB(const int tid, void *(*start_routine)(void *), void *args):
 {
     char stack[STACK_SIZE];
 
+    ucontext_t cont;
+
+    context = &cont;
+
     sp = (address_t)stack + STACK_SIZE - sizeof(int);
     pc = (address_t)start_routine;
 

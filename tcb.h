@@ -64,7 +64,7 @@ class TCB
         int tid;
 
         //! Thread context
-        ucontext_t *context;
+        ucontext_t* context;
 
         //! Stack Pointer
         address_t sp;
